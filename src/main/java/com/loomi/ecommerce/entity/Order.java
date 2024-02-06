@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -32,6 +33,11 @@ public class Order {
     @JoinColumn(name = "client_id", nullable = false, insertable = false, updatable = false)
     @JsonIgnoreProperties({"orders"})
     private Client client;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
