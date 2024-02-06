@@ -1,11 +1,14 @@
 package com.loomi.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 
@@ -42,6 +45,10 @@ public class User {
     @Column(nullable = false)
     private UserType type;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(mappedBy = "user")
+    private Client client;
 
     public Long getId() {
         return id;
@@ -97,6 +104,14 @@ public class User {
 
     public void setType(UserType type) {
         this.type = type;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
 }
