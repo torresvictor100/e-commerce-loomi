@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -37,6 +38,11 @@ public class Client {
     private String contact;
     private String address;
     private boolean isActive;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders;
 
     @Column(name = "creation_date", nullable = false)
     @CreationTimestamp
