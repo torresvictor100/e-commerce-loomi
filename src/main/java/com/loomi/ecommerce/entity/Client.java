@@ -1,9 +1,13 @@
 package com.loomi.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 
@@ -17,6 +21,18 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_sq")
     @SequenceGenerator(name = "client_sq", sequenceName = "client_sq", initialValue = 1, allocationSize = 1)
     private Long id;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
+    @JsonIgnoreProperties({"client"})
+    private User user;
+
     private String fullName;
     private String contact;
     private String address;
@@ -61,4 +77,35 @@ public class Client {
         isActive = active;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Timestamp getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
+    }
 }
