@@ -32,6 +32,17 @@ public class OrderItem {
     @JsonIgnoreProperties({"orderItems"})
     private Order order;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "product_id", nullable = false)
+    private Long productId;
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false, insertable = false, updatable = false)
+    @JsonIgnoreProperties({"orderItems"})
+    private Product product;
+
     private int quantity;
 
     private BigDecimal unitPrice;
@@ -66,5 +77,37 @@ public class OrderItem {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
