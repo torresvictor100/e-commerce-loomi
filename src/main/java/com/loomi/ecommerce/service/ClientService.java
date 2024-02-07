@@ -1,6 +1,7 @@
 package com.loomi.ecommerce.service;
 
 import com.loomi.ecommerce.entity.Client;
+import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,11 @@ public class ClientService {
     public List<Client> findByFullName(String fullName) {
         return clientRepository
                 .findByFullNameContainingIgnoreCase(fullName);
+    }
+
+    public List<Order> findListOrderByCLientId(Long id) {
+        Optional<Client> optionalClient =  clientRepository.findById(id);
+        return optionalClient.get().getOrders();
     }
 
     public Client update(Client client) {
