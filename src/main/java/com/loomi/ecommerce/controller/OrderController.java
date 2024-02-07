@@ -66,7 +66,7 @@ public class OrderController {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
-    @GetMapping(path = "/orderItem", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/orderdate", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Order>> findByOrderDate(
             @RequestParam(name = "start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,

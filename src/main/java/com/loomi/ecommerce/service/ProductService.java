@@ -64,9 +64,9 @@ public class ProductService {
             throws InsufficientStockException, ProductNotFoundException {
         Product productFound = findById(product.getId());
         if (productFound != null) {
-            if (product.getQuantityInStock() >= quantity) {
-                product.setQuantityInStock(product.getQuantityInStock() - quantity);
-                return productRepository.save(product);
+            if (productFound.getQuantityInStock() >= quantity) {
+                productFound.setQuantityInStock(productFound.getQuantityInStock() - quantity);
+                return productRepository.save(productFound);
             } else {
                 throw new InsufficientStockException("Not enough stock available");
             }
