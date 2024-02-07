@@ -67,7 +67,7 @@ public class ProductController {
     }
 
     @Operation(summary = "Find Product by category", tags = "Product")
-    @GetMapping(path = "/name/{product_category}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/category/{product_category}",produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Product>> findByCategory(@PathVariable(name = "product_category") String category){
         return ResponseEntity.ok(productService.findByCategory(category));
