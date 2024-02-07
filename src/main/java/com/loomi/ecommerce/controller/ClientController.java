@@ -1,7 +1,7 @@
 package com.loomi.ecommerce.controller;
 
 import com.loomi.ecommerce.entity.Client;
-import com.loomi.ecommerce.entity.User;
+import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,6 +46,18 @@ public class ClientController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(client, HttpStatus.OK);
+        }
+    }
+
+    @Operation(summary = "Find Order by CLientId", tags = "Client")
+    @GetMapping(path = "/order/{client_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<Order>> findOrderByClientId(@PathVariable(name = "client_id") Long id) {
+        List<Order> listClient = clientService.findListOrderByCLientId(id);
+        if (listClient == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(listClient, HttpStatus.OK);
         }
     }
 
