@@ -20,18 +20,34 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sq")
     @SequenceGenerator(name = "product_sq", sequenceName = "product_sq", initialValue = 1, allocationSize = 1)
     private Long id;
-
     private String productName;
     private String description;
     private double price;
     private int quantityInStock;
     private Timestamp creationDate;
     private Timestamp updateDate;
+    private String category;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getProductName() {
         return productName;
