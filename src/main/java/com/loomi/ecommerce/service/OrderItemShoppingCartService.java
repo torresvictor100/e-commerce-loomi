@@ -3,6 +3,9 @@ package com.loomi.ecommerce.service;
 import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.entity.OrderItem;
 import com.loomi.ecommerce.entity.OrderItemShoppingCart;
+import com.loomi.ecommerce.entity.Product;
+import com.loomi.ecommerce.exeception.InsufficientStockException;
+import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import com.loomi.ecommerce.repository.OrderItemShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class OrderItemShoppingCartService {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private ProductService productService;
 
     public List<OrderItemShoppingCart> findAll(){
         return orderItemShoppingCartRepository.findAll();
@@ -51,7 +57,7 @@ public class OrderItemShoppingCartService {
     }
 
     public List<OrderItem> ConvertOrderItemShoppingCarttoOrderItem
-            (List<OrderItemShoppingCart>  listOrderItemShoppingCart, Order order){
+            (List<OrderItemShoppingCart>  listOrderItemShoppingCart, Order order) throws InsufficientStockException, ProductNotFoundException {
         List<OrderItem> listOrderItems = new ArrayList<>();
 
         for (OrderItemShoppingCart itemShoppingCart : listOrderItemShoppingCart) {
@@ -66,6 +72,7 @@ public class OrderItemShoppingCartService {
             orderItem.setProduct(itemShoppingCart.getProduct());
 
             orderItemService.save(orderItem);
+            productService.removeProductByQuantity(orderItem.getQuantity(), orderItem.getProduct());
             listOrderItems.add(orderItem);
         }
         return listOrderItems;

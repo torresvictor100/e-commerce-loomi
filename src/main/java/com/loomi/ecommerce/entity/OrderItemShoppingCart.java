@@ -24,7 +24,6 @@ public class OrderItemShoppingCart {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "shopping_cart_id", nullable = false)
-    @JsonIgnore
     private Long shoppingCartId;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
