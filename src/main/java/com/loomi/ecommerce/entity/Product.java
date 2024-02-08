@@ -33,6 +33,19 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "product")
+    private List<OrderItemShoppingCart> orderItemsShoppingCart;
+
+    public List<OrderItemShoppingCart> getOrderItemsShoppingCart() {
+        return orderItemsShoppingCart;
+    }
+
+    public void setOrderItemsShoppingCart(List<OrderItemShoppingCart> orderItemsShoppingCart) {
+        this.orderItemsShoppingCart = orderItemsShoppingCart;
+    }
+
     public Long getId() {
         return id;
     }
