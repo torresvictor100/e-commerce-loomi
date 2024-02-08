@@ -44,6 +44,11 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Order> orders;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "client")
+    private List<ShoppingCart> shoppingCart;
+
     @Column(name = "creation_date", nullable = false)
     @CreationTimestamp
     private Timestamp creationDate;
