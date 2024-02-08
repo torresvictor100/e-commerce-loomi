@@ -4,6 +4,8 @@ import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.entity.OrderItem;
 import com.loomi.ecommerce.entity.OrderStatus;
 import com.loomi.ecommerce.entity.ShoppingCart;
+import com.loomi.ecommerce.exeception.InsufficientStockException;
+import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import com.loomi.ecommerce.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,12 +57,12 @@ public class ShoppingCartService {
 
     }
 
-    public Order convertShoppingCarInOrder(Long id){
+    public Order convertShoppingCarInOrder(Long id) throws InsufficientStockException, ProductNotFoundException {
         Optional<ShoppingCart> optionalShoppingCart =  shoppingCartRepository.findById(id);
         return convertShoppingCarInOrder(optionalShoppingCart.get());
     }
 
-    private Order convertShoppingCarInOrder(ShoppingCart shoppingCart){
+    private Order convertShoppingCarInOrder(ShoppingCart shoppingCart) throws InsufficientStockException, ProductNotFoundException {
         Order order = new Order();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
