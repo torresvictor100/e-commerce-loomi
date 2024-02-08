@@ -1,10 +1,13 @@
 package com.loomi.ecommerce.service;
 
+import com.loomi.ecommerce.entity.Order;
+import com.loomi.ecommerce.entity.OrderItem;
 import com.loomi.ecommerce.entity.OrderItemShoppingCart;
 import com.loomi.ecommerce.repository.OrderItemShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +16,9 @@ public class OrderItemShoppingCartService {
 
     @Autowired
     private OrderItemShoppingCartRepository orderItemShoppingCartRepository;
+
+    @Autowired
+    private OrderItemService orderItemService;
 
     public List<OrderItemShoppingCart> findAll(){
         return orderItemShoppingCartRepository.findAll();
@@ -42,5 +48,26 @@ public class OrderItemShoppingCartService {
         orderItemShoppingCart.setId(id);
         orderItemShoppingCartRepository.delete(orderItemShoppingCart);
 
+    }
+
+    public List<OrderItem> ConvertOrderItemShoppingCarttoOrderItem
+            (List<OrderItemShoppingCart>  listOrderItemShoppingCart, Order order){
+        List<OrderItem> listOrderItems = new ArrayList<>();
+
+        for (OrderItemShoppingCart itemShoppingCart : listOrderItemShoppingCart) {
+            OrderItem orderItem = new OrderItem();
+
+            orderItem.setId(null);
+            orderItem.setOrderId(order.getId());
+            orderItem.setOrder(order);
+            orderItem.setQuantity(itemShoppingCart.getQuantity());
+            orderItem.setUnitPrice(itemShoppingCart.getUnitPrice());
+            orderItem.setProductId(itemShoppingCart.getProductId());
+            orderItem.setProduct(itemShoppingCart.getProduct());
+
+            orderItemService.save(orderItem);
+            listOrderItems.add(orderItem);
+        }
+        return listOrderItems;
     }
 }

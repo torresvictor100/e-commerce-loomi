@@ -1,10 +1,15 @@
 package com.loomi.ecommerce.service;
 
+import com.loomi.ecommerce.entity.Order;
+import com.loomi.ecommerce.entity.OrderItem;
+import com.loomi.ecommerce.entity.OrderStatus;
 import com.loomi.ecommerce.entity.ShoppingCart;
 import com.loomi.ecommerce.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +18,12 @@ public class ShoppingCartService {
 
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
+    private OrderItemShoppingCartService orderItemShoppingCartService;
+
+    @Autowired
+    private OrderService orderService;
 
     public List<ShoppingCart> findAll(){
         return shoppingCartRepository.findAll();
@@ -41,6 +52,27 @@ public class ShoppingCartService {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(id);
         shoppingCartRepository.delete(shoppingCart);
+
+    }
+
+    public Order convertShoppingCarInOrder(Long id){
+        Optional<ShoppingCart> optionalShoppingCart =  shoppingCartRepository.findById(id);
+        return convertShoppingCarInOrder(optionalShoppingCart.get());
+    }
+
+    private Order convertShoppingCarInOrder(ShoppingCart shoppingCart){
+        Order order = new Order();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        order.setId(null);
+        order.setClientId(shoppingCart.getClientId());
+        order.setOrderDate(timestamp);
+        order.setStatus(OrderStatus.RECEIVED);
+        order.setTotalAmount(BigDecimal.ZERO);
+        Order orderSave = orderService.save(order);
+        List<OrderItem> listOrderItem = orderItemShoppingCartService.ConvertOrderItemShoppingCarttoOrderItem(shoppingCart.getOrderItemsShoppingCart(), orderSave);
+        orderSave.setOrderItems(listOrderItem);
+        return orderService.update(orderSave);
 
     }
 }
