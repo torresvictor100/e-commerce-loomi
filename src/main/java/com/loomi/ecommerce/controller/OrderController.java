@@ -112,6 +112,25 @@ public class OrderController {
         }
     }
 
+    @Operation(summary = "Update Status Ordem a Order", tags = "Order")
+    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @PutMapping(path = "updatestatusordem/{order_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Order> updateStatusOrdem(@PathVariable(name = "order_id") Long id, @RequestBody Order order) {
+        order.setId(id);
+        try {
+            order = orderService.updateStatusOrdem(order);
+            if (order == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(order, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @Operation(summary = "Delete a Order", tags = "Order")
     @ApiResponses({ @ApiResponse(responseCode = "204", description = "No Content") })
     @DeleteMapping(path = "/{order_id}")
