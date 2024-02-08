@@ -1,5 +1,6 @@
 package com.loomi.ecommerce.controller;
 
+import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.entity.ShoppingCart;
 import com.loomi.ecommerce.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,18 @@ public class ShoppingCartController {
         try {
             shoppingCart = shoppingCartService.save(shoppingCart);
             return new ResponseEntity<>(shoppingCart, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "convert Shopping Car In Order", tags = "ShoppingCart")
+    @PostMapping(path = "/convert",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Order> convertShoppingCarInOrder(@RequestBody ShoppingCart shoppingCart) {
+        try {
+            Order order = shoppingCartService.convertShoppingCarInOrder(shoppingCart.getId());
+            return new ResponseEntity<>(order, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
