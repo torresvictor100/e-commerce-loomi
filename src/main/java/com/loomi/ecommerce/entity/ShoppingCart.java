@@ -1,6 +1,5 @@
 package com.loomi.ecommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -21,7 +20,7 @@ public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shoppingcart_sq")
-    @SequenceGenerator(name = "shoppingcart_sq", sequenceName = "shoppingcart_sq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "shoppingcart_sq", sequenceName = "shoppingcart_sq", allocationSize = 1)
     private Long id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
