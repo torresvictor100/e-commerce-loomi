@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "\"order_item_shopping_cart\"")
@@ -19,7 +21,7 @@ public class OrderItemShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_item__shopping_cart_sq")
-    @SequenceGenerator(name = "order_item_shopping_cart_sq", sequenceName = "order_item_shopping_cart_sq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "order_item_shopping_cart_sq", sequenceName = "order_item_shopping_cart_sq", allocationSize = 1)
     private Long id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -57,51 +59,4 @@ public class OrderItemShoppingCart {
         this.subtotal = this.unitPrice.multiply(BigDecimal.valueOf(this.quantity));
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 }
