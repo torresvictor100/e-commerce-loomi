@@ -1,9 +1,9 @@
 package com.loomi.ecommerce.repository;
 
-import com.loomi.ecommerce.entity.SalesReport;
+import com.loomi.ecommerce.entity.ShoppingCart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface  SalesReportRepository extends JpaRepository<SalesReport, Long> {
+public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
 }

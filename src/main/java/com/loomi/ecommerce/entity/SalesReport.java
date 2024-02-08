@@ -2,7 +2,9 @@ package com.loomi.ecommerce.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -10,6 +12,8 @@ import java.sql.Timestamp;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "\"sales_report\"")
 public class SalesReport {
 
@@ -26,35 +30,4 @@ public class SalesReport {
 
     private String filePath;
 
-    public Timestamp getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(Timestamp period) {
-        this.period = period;
-    }
-
-    public BigDecimal getTotalSales() {
-        return totalSales;
-    }
-
-    public void setTotalSales(BigDecimal totalSales) {
-        this.totalSales = totalSales;
-    }
-
-    public int getProductsSold() {
-        return productsSold;
-    }
-
-    public void setProductsSold(int productsSold) {
-        this.productsSold = productsSold;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
 }
