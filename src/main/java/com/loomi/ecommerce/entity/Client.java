@@ -1,5 +1,6 @@
 package com.loomi.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -42,11 +43,13 @@ public class Client {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<Order> orders;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<ShoppingCart> shoppingCart;
 
     @Column(name = "creation_date", nullable = false)

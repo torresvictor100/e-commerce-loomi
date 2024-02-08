@@ -1,5 +1,6 @@
 package com.loomi.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,11 +32,13 @@ public class Product {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<OrderItem> orderItems;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<OrderItemShoppingCart> orderItemsShoppingCart;
 
     public List<OrderItemShoppingCart> getOrderItemsShoppingCart() {
