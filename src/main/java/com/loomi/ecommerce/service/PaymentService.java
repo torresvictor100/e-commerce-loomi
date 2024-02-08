@@ -4,17 +4,29 @@ import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.exeception.InsufficientStockException;
 import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PaymentService {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Value("${email.subject}")
+    private String emailSubject;
+
+    @Value("${email.body}")
+    private String emailBody;
+
     public Order paymentConfirmed(Long shoppingId) throws InsufficientStockException, ProductNotFoundException {
-        return shoppingCartService.convertShoppingCarInOrder(shoppingId);
+        Order order = shoppingCartService.convertShoppingCarInOrder(shoppingId);
+        String destinatario = "loomiecommerce@gmail.com";
+        emailService.sendEmail(destinatario, emailSubject, emailBody);
+        return order;
 
     }
+
 }
