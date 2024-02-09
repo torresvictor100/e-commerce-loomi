@@ -25,8 +25,7 @@ public class PaymentService {
 
     public Order paymentConfirmed(Long shoppingId) throws InsufficientStockException, ProductNotFoundException {
         Order order = shoppingCartService.convertShoppingCarInOrder(shoppingId);
-        String destinatario = "loomiecommerce@gmail.com";
-        emailService.sendEmail(destinatario, emailSubject, emailBody);
+        emailService.sendEmail(emailSubject, emailSubject, emailBody);
         return order;
 
     }
