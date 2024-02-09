@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
     @Autowired
     private final UserRepository userRepository;
 
@@ -25,9 +24,7 @@ public class UserService {
     }
 
     public User save(User user) {
-
         user.setId(null);
-        user.setPassword("123");
         return userRepository.save(user);
     }
 
@@ -59,5 +56,4 @@ public class UserService {
         userRepository.delete(user);
 
     }
-
 }

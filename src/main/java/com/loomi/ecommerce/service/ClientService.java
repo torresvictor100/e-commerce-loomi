@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Service
 public class ClientService {
-
     @Autowired
     private final ClientRepository clientRepository;
 
@@ -24,7 +23,6 @@ public class ClientService {
     }
 
     public Client save(Client client) {
-
         client.setId(null);
         return clientRepository.save(client);
     }
@@ -57,7 +55,5 @@ public class ClientService {
         Client client = new Client();
         client.setId(id);
         clientRepository.delete(client);
-
     }
-
 }

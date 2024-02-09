@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
-
     @Autowired
     ProductRepository productRepository;
 
@@ -26,7 +25,6 @@ public class ProductService {
     }
 
     public Product save(Product product) {
-
         product.setId(null);
         return productRepository.save(product);
     }
@@ -99,6 +97,5 @@ public class ProductService {
         productRepository.delete(product);
 
     }
-
 }
 

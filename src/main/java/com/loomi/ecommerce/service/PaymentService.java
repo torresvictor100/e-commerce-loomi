@@ -10,16 +10,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentService {
     @Autowired
-    private ShoppingCartService shoppingCartService;
-
+    final private ShoppingCartService shoppingCartService;
     @Autowired
-    private EmailService emailService;
-
+    final private EmailService emailService;
     @Value("${email.subject}")
     private String emailSubject;
-
     @Value("${email.body}")
     private String emailBody;
+
+    public PaymentService(ShoppingCartService shoppingCartService, EmailService emailService) {
+        this.shoppingCartService = shoppingCartService;
+        this.emailService = emailService;
+    }
 
     public Order paymentConfirmed(Long shoppingId) throws InsufficientStockException, ProductNotFoundException {
         Order order = shoppingCartService.convertShoppingCarInOrder(shoppingId);
@@ -28,5 +30,4 @@ public class PaymentService {
         return order;
 
     }
-
 }
