@@ -64,8 +64,8 @@ public class ShoppingCartService {
 
     public Order convertShoppingCarInOrder(Long id)
             throws InsufficientStockException, ProductNotFoundException {
-        Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepository.findById(id);
-        return convertShoppingCarInOrder(optionalShoppingCart.get());
+            ShoppingCart optionalShoppingCart = this.findById(id);
+        return convertShoppingCarInOrder(optionalShoppingCart);
     }
 
     private Order convertShoppingCarInOrder(ShoppingCart shoppingCart)
