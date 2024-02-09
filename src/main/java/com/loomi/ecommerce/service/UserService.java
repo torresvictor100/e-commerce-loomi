@@ -14,17 +14,17 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User save(User user){
+    public User save(User user) {
 
         user.setId(null);
         user.setPassword("123");
@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> optionalUser=  userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.orElse(null);
     }
 
@@ -45,10 +45,10 @@ public class UserService {
     }
 
     public User update(User user) {
-        User  userFound = findById(user.getId());
+        User userFound = findById(user.getId());
         if (userFound != null) {
             return userRepository.save(user);
-        }else{
+        } else {
             return user;
         }
     }
