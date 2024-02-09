@@ -64,7 +64,7 @@ public class ShoppingCartService {
 
     public Order convertShoppingCarInOrder(Long id)
             throws InsufficientStockException, ProductNotFoundException {
-            ShoppingCart optionalShoppingCart = this.findById(id);
+        ShoppingCart optionalShoppingCart = this.findById(id);
         return convertShoppingCarInOrder(optionalShoppingCart);
     }
 
@@ -87,7 +87,6 @@ public class ShoppingCartService {
         order.setClientId(shoppingCart.getClientId());
         order.setOrderDate(timestamp);
         order.setStatus(OrderStatus.RECEIVED);
-        order.setTotalAmount(BigDecimal.ZERO);
         return orderService.save(order);
     }
 
