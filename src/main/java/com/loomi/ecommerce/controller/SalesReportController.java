@@ -22,13 +22,13 @@ public class SalesReportController {
     @Operation(summary = "Find all Sales Report", tags = "SalesReport")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<SalesReport>> findAll(){
+    public ResponseEntity<List<SalesReport>> findAll() {
         return ResponseEntity.ok(salesReportService.findAll());
     }
 
     @Operation(summary = "Find Sales Report by ID", tags = "SalesReport")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/{sales_report_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<SalesReport> findById(@PathVariable(name = "sales_report_id") Long id) {
@@ -53,12 +53,12 @@ public class SalesReportController {
     }
 
     @Operation(summary = "Update a Sales Report", tags = "SalesReport")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @PutMapping(path = "/{sales_report_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<SalesReport> update(@PathVariable(name = "sales_report_id") Long id,
-                                       @RequestBody SalesReport salesReport) {
+                                              @RequestBody SalesReport salesReport) {
         salesReport.setId(id);
         try {
             salesReport = salesReportService.update(salesReport);
@@ -73,7 +73,7 @@ public class SalesReportController {
     }
 
     @Operation(summary = "Delete a Sales Report", tags = "SalesReport")
-    @ApiResponses({ @ApiResponse(responseCode = "204", description = "No Content") })
+    @ApiResponses({@ApiResponse(responseCode = "204", description = "No Content")})
     @DeleteMapping(path = "/{sales_report_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteById(@PathVariable(name = "sales_report_id") Long id) {
