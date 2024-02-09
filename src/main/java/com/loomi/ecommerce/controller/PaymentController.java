@@ -21,8 +21,8 @@ public class PaymentController {
     @Operation(summary = "Payment Confirmed", tags = "Payment")
     @PostMapping(path = "/{shopping_card_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Order paymentConfirmed(@RequestBody Boolean statusPayment,@PathVariable(name = "shopping_card_id") Long shoppingCardId){
-        if(statusPayment != null && statusPayment){
+    public Order paymentConfirmed(@RequestBody Boolean statusPayment, @PathVariable(name = "shopping_card_id") Long shoppingCardId) {
+        if (statusPayment != null && statusPayment) {
             try {
                 return paymentService.paymentConfirmed(shoppingCardId);
             } catch (InsufficientStockException e) {

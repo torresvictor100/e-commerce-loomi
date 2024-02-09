@@ -27,13 +27,13 @@ public class ProductController {
     @Operation(summary = "Find all Product", tags = "Product")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Product>> findAll(){
+    public ResponseEntity<List<Product>> findAll() {
         return ResponseEntity.ok(productService.findAll());
     }
 
     @Operation(summary = "Find Product by ID", tags = "Product")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/{product_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Product> findById(@PathVariable(name = "product_id") Long id) {
@@ -46,8 +46,8 @@ public class ProductController {
     }
 
     @Operation(summary = "Find OrderItem by Product ID", tags = "Product")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/orderitem/{product_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<OrderItem>> findOrderItemByProjectId(@PathVariable(name = "product_id") Long id) {
@@ -60,45 +60,45 @@ public class ProductController {
     }
 
     @Operation(summary = "Find Product by name", tags = "Product")
-    @GetMapping(path = "/name/{product_name}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/name/{product_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Product>> findByName(@PathVariable(name = "product_name") String name){
+    public ResponseEntity<List<Product>> findByName(@PathVariable(name = "product_name") String name) {
         return ResponseEntity.ok(productService.findByProductName(name));
     }
 
     @Operation(summary = "Find Product by category", tags = "Product")
-    @GetMapping(path = "/category/{product_category}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/category/{product_category}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Product>> findByCategory(@PathVariable(name = "product_category") String category){
+    public ResponseEntity<List<Product>> findByCategory(@PathVariable(name = "product_category") String category) {
         return ResponseEntity.ok(productService.findByCategory(category));
     }
 
     @Operation(summary = "Find Product by description", tags = "Product")
-    @GetMapping(path = "/description/{product_description}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/description/{product_description}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Product>> findByDescription(@PathVariable(name = "product_description") String description){
+    public ResponseEntity<List<Product>> findByDescription(@PathVariable(name = "product_description") String description) {
         return ResponseEntity.ok(productService.findByDescription(description));
     }
 
     @Operation(summary = "Find Available Products", tags = "Product")
-    @GetMapping(path = "/availableproducts",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/availableproducts", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Product>> availableProducts(){
+    public ResponseEntity<List<Product>> availableProducts() {
         return ResponseEntity.ok(productService.availableProducts());
     }
 
     @Operation(summary = "Find Product by price", tags = "Product")
-    @GetMapping(path = "/price/{product_price}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/price/{product_price}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Product>> findByPrice(@PathVariable(name = "product_price") double price){
+    public ResponseEntity<List<Product>> findByPrice(@PathVariable(name = "product_price") double price) {
         return ResponseEntity.ok(productService.findByPrice(price));
     }
 
     @Operation(summary = "Find Product by quantity in stock", tags = "Product")
-    @GetMapping(path = "/quantityinstock/{product_quantity_in_stock}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/quantityinstock/{product_quantity_in_stock}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Product>> findByQuantityInStock(@PathVariable(name = "product_quantity_in_stock")
-                                                                   int quantityInStock){
+                                                               int quantityInStock) {
         return ResponseEntity.ok(productService.findByQuantityInStock(quantityInStock));
     }
 
@@ -115,8 +115,8 @@ public class ProductController {
     }
 
     @Operation(summary = "Update a Product", tags = "Product")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @PutMapping(path = "/{product_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Product> update(@PathVariable(name = "product_id") Long id, @RequestBody Product product) {
@@ -134,8 +134,8 @@ public class ProductController {
     }
 
     @Operation(summary = "Remove Product Quantity", tags = "Product")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @PutMapping(path = "removeproduct/{quantity}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Product> removeProductByQuantity(@PathVariable(name = "quantity") int quantity, @RequestBody Product product) {
@@ -151,7 +151,7 @@ public class ProductController {
     }
 
     @Operation(summary = "Delete a Product", tags = "Product")
-    @ApiResponses({ @ApiResponse(responseCode = "204", description = "No Content") })
+    @ApiResponses({@ApiResponse(responseCode = "204", description = "No Content")})
     @DeleteMapping(path = "/{product_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteById(@PathVariable(name = "product_id") Long id) {
