@@ -24,27 +24,27 @@ public class UserController {
     @Operation(summary = "Find all Users", tags = "User")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<User>> findAll() {
         return ResponseEntity.ok(userService.findAll());
     }
 
     @Operation(summary = "Find Users by name", tags = "User")
-    @GetMapping(path = "/name/{user_name}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/name/{user_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<User>> findByName(@PathVariable(name = "user_name") String name){
+    public ResponseEntity<List<User>> findByName(@PathVariable(name = "user_name") String name) {
         return ResponseEntity.ok(userService.findByName(name));
     }
 
     @Operation(summary = "Find Users by email", tags = "User")
-    @GetMapping(path = "/email/{user_email}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/email/{user_email}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<User>> findByEmail(@PathVariable(name = "user_email") String email){
+    public ResponseEntity<List<User>> findByEmail(@PathVariable(name = "user_email") String email) {
         return ResponseEntity.ok(userService.findByEmail(email));
     }
 
     @Operation(summary = "Find User by ID", tags = "User")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/{user_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<User> findById(@PathVariable(name = "user_id") Long id) {
@@ -69,8 +69,8 @@ public class UserController {
     }
 
     @Operation(summary = "Update a User", tags = "User")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @PutMapping(path = "/{user_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<User> update(@PathVariable(name = "user_id") Long id,
@@ -89,12 +89,11 @@ public class UserController {
     }
 
     @Operation(summary = "Delete a User", tags = "User")
-    @ApiResponses({ @ApiResponse(responseCode = "204", description = "No Content") })
+    @ApiResponses({@ApiResponse(responseCode = "204", description = "No Content")})
     @DeleteMapping(path = "/{user_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteById(@PathVariable(name = "user_id") Long id) {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

@@ -23,13 +23,13 @@ public class OrderItemShoppingCartController {
     @Operation(summary = "Find all Order Item Shopping Cart", tags = "OrderItemShoppingCart")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<OrderItemShoppingCart>> findAll(){
+    public ResponseEntity<List<OrderItemShoppingCart>> findAll() {
         return ResponseEntity.ok(orderItemShoppingCartService.findAll());
     }
 
     @Operation(summary = "Find Order Item Shopping Cart by ID", tags = "OrderItemShoppingCart")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/{order_item_shopping_cart_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderItemShoppingCart> findById(@PathVariable(name = "order_item_shopping_cart_id") Long id) {
@@ -54,12 +54,12 @@ public class OrderItemShoppingCartController {
     }
 
     @Operation(summary = "Update a Order Item Shopping Cart", tags = "OrderItemShoppingCart")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @PutMapping(path = "/{order_item_shopping_cart_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderItemShoppingCart> update(@PathVariable(name = "order_item_shopping_cart_id") Long id,
-                                               @RequestBody OrderItemShoppingCart orderItemShoppingCart) {
+                                                        @RequestBody OrderItemShoppingCart orderItemShoppingCart) {
         orderItemShoppingCart.setId(id);
         try {
             orderItemShoppingCart = orderItemShoppingCartService.update(orderItemShoppingCart);
@@ -74,7 +74,7 @@ public class OrderItemShoppingCartController {
     }
 
     @Operation(summary = "Delete a Order Item Shopping Cart", tags = "OrderItemShoppingCart")
-    @ApiResponses({ @ApiResponse(responseCode = "204", description = "No Content") })
+    @ApiResponses({@ApiResponse(responseCode = "204", description = "No Content")})
     @DeleteMapping(path = "/{order_item_shopping_cart_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteById(@PathVariable(name = "order_item_shopping_cart_id") Long id) {
