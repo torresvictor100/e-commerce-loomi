@@ -14,36 +14,35 @@ import java.util.Optional;
 public class OrderService {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
-    public List<Order> findAll(){
+    public List<Order> findAll() {
         return orderRepository.findAll();
     }
 
-    public Order save(Order order){
+    public Order save(Order order) {
         order.setId(null);
         return orderRepository.save(order);
     }
 
     public Order findById(Long id) {
-        Optional<Order> optionalOrder=  orderRepository.findById(id);
+        Optional<Order> optionalOrder = orderRepository.findById(id);
         return optionalOrder.orElse(null);
     }
 
     public List<Order> findByOrderDate(Date startDate, Date endDate) {
-        List<Order> listOrder=  orderRepository.findByOrderDateBetween(startDate, endDate);
-        return listOrder;
+        return orderRepository.findByOrderDateBetween(startDate, endDate);
     }
 
     public Order update(Order order) {
-        Order  orderFound = findById(order.getId());
+        Order orderFound = findById(order.getId());
         if (orderFound != null) {
             return orderRepository.save(order);
-        }else{
+        } else {
             return order;
         }
     }
@@ -69,17 +68,11 @@ public class OrderService {
     }
 
     private OrderStatus getNextStatus(OrderStatus currentStatus) {
-        switch (currentStatus) {
-            case RECEIVED:
-                return OrderStatus.INPREPARATION;
-            case INPREPARATION:
-                return OrderStatus.DISPATCHED;
-            case DISPATCHED:
-                return OrderStatus.DELIVERED;
-            case DELIVERED:
-                return OrderStatus.DELIVERED;
-            default:
-                throw new IllegalArgumentException("Unexpected current status: " + currentStatus);
-        }
+        return switch (currentStatus) {
+            case RECEIVED -> OrderStatus.INPREPARATION;
+            case INPREPARATION -> OrderStatus.DISPATCHED;
+            case DISPATCHED -> OrderStatus.DELIVERED;
+            case DELIVERED -> OrderStatus.DELIVERED;
+        };
     }
 }

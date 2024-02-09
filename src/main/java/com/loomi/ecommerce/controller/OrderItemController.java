@@ -23,13 +23,13 @@ public class OrderItemController {
     @Operation(summary = "Find all OrderItem", tags = "OrderItem")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<OrderItem>> findAll(){
+    public ResponseEntity<List<OrderItem>> findAll() {
         return ResponseEntity.ok(orderItemService.findAll());
     }
 
     @Operation(summary = "Find OrderItem by ID", tags = "OrderItem")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/{order_item_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderItem> findById(@PathVariable(name = "order_item_id") Long id) {
@@ -54,12 +54,12 @@ public class OrderItemController {
     }
 
     @Operation(summary = "Update a OrderItem", tags = "OrderItem")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @PutMapping(path = "/{order_item_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderItem> update(@PathVariable(name = "order_item_id") Long id,
-                                       @RequestBody OrderItem orderItem) {
+                                            @RequestBody OrderItem orderItem) {
         orderItem.setId(id);
         try {
             orderItem = orderItemService.update(orderItem);
@@ -74,7 +74,7 @@ public class OrderItemController {
     }
 
     @Operation(summary = "Delete a OrderItem", tags = "OrderItem")
-    @ApiResponses({ @ApiResponse(responseCode = "204", description = "No Content") })
+    @ApiResponses({@ApiResponse(responseCode = "204", description = "No Content")})
     @DeleteMapping(path = "/{order_item_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteById(@PathVariable(name = "order_item_id") Long id) {

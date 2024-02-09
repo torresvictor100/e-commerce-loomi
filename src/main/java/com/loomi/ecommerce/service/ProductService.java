@@ -21,18 +21,18 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> findAll(){
+    public List<Product> findAll() {
         return productRepository.findAll();
     }
 
-    public Product save(Product product){
+    public Product save(Product product) {
 
         product.setId(null);
         return productRepository.save(product);
     }
 
     public Product findById(Long id) {
-        Optional<Product> optionalProduct=  productRepository.findById(id);
+        Optional<Product> optionalProduct = productRepository.findById(id);
         return optionalProduct.orElse(null);
     }
 
@@ -42,36 +42,41 @@ public class ProductService {
     }
 
     public List<Product> findByProductName(String productName) {
-        return  productRepository.findByProductNameContainingIgnoreCase(productName);
+        return productRepository.findByProductNameContainingIgnoreCase(productName);
     }
 
     public List<Product> findByCategory(String category) {
-        return  productRepository.findByCategoryContainingIgnoreCase(category);
+        return productRepository.findByCategoryContainingIgnoreCase(category);
     }
 
     public List<Product> findByDescription(String description) {
-        return  productRepository.findByDescriptionContainingIgnoreCase(description);
+        return productRepository.findByDescriptionContainingIgnoreCase(description);
     }
 
     public List<Product> findByPrice(double price) {
-        return  productRepository.findByPrice(price);
+        return productRepository.findByPrice(price);
     }
 
     public List<Product> findByQuantityInStock(int quantityInStock) {
-        return  productRepository.findByQuantityInStock(quantityInStock);
+        return productRepository.findByQuantityInStock(quantityInStock);
     }
+
     public Product removeProductByQuantity(int quantity, Product product)
             throws InsufficientStockException, ProductNotFoundException {
         Product productFound = findById(product.getId());
         if (productFound != null) {
-            if (productFound.getQuantityInStock() >= quantity) {
-                productFound.setQuantityInStock(productFound.getQuantityInStock() - quantity);
-                return productRepository.save(productFound);
-            } else {
-                throw new InsufficientStockException("Not enough stock available");
-            }
+            return setQuantityProduct(quantity, productFound);
         } else {
             throw new ProductNotFoundException("Product not found");
+        }
+    }
+
+    private Product setQuantityProduct(int quantity, Product product) throws InsufficientStockException {
+        if (product.getQuantityInStock() >= quantity) {
+            product.setQuantityInStock(product.getQuantityInStock() - quantity);
+            return productRepository.save(product);
+        } else {
+            throw new InsufficientStockException("Not enough stock available");
         }
     }
 
@@ -83,7 +88,7 @@ public class ProductService {
         Product productFound = findById(product.getId());
         if (productFound != null) {
             return productRepository.save(product);
-        }else{
+        } else {
             return product;
         }
     }
