@@ -3,7 +3,6 @@ package com.loomi.ecommerce.service;
 import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.entity.OrderItem;
 import com.loomi.ecommerce.entity.OrderItemShoppingCart;
-import com.loomi.ecommerce.entity.Product;
 import com.loomi.ecommerce.exeception.InsufficientStockException;
 import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import com.loomi.ecommerce.repository.OrderItemShoppingCartRepository;
@@ -16,27 +15,31 @@ import java.util.Optional;
 
 @Service
 public class OrderItemShoppingCartService {
-
     @Autowired
-    private OrderItemShoppingCartRepository orderItemShoppingCartRepository;
-
+    final private OrderItemShoppingCartRepository orderItemShoppingCartRepository;
     @Autowired
-    private OrderItemService orderItemService;
-
+    final private OrderItemService orderItemService;
     @Autowired
-    private ProductService productService;
+    final private ProductService productService;
 
-    public List<OrderItemShoppingCart> findAll(){
+    public OrderItemShoppingCartService(OrderItemShoppingCartRepository orderItemShoppingCartRepository,
+                                        OrderItemService orderItemService, ProductService productService) {
+        this.orderItemShoppingCartRepository = orderItemShoppingCartRepository;
+        this.orderItemService = orderItemService;
+        this.productService = productService;
+    }
+
+    public List<OrderItemShoppingCart> findAll() {
         return orderItemShoppingCartRepository.findAll();
     }
 
-    public OrderItemShoppingCart save(OrderItemShoppingCart orderItemShoppingCart){
+    public OrderItemShoppingCart save(OrderItemShoppingCart orderItemShoppingCart) {
         orderItemShoppingCart.setId(null);
         return orderItemShoppingCartRepository.save(orderItemShoppingCart);
     }
 
     public OrderItemShoppingCart findById(Long id) {
-        Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart =  orderItemShoppingCartRepository.findById(id);
+        Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart = orderItemShoppingCartRepository.findById(id);
         return optionalOrderItemShoppingCart.orElse(null);
     }
 
@@ -44,7 +47,7 @@ public class OrderItemShoppingCartService {
         OrderItemShoppingCart orderItemShoppingCartound = findById(orderItemShoppingCart.getId());
         if (orderItemShoppingCartound != null) {
             return orderItemShoppingCartRepository.save(orderItemShoppingCart);
-        }else{
+        } else {
             return orderItemShoppingCart;
         }
     }
@@ -57,7 +60,8 @@ public class OrderItemShoppingCartService {
     }
 
     public List<OrderItem> ConvertOrderItemShoppingCarttoOrderItem
-            (List<OrderItemShoppingCart>  listOrderItemShoppingCart, Order order) throws InsufficientStockException, ProductNotFoundException {
+            (List<OrderItemShoppingCart> listOrderItemShoppingCart, Order order)
+            throws InsufficientStockException, ProductNotFoundException {
         List<OrderItem> listOrderItems = new ArrayList<>();
 
         for (OrderItemShoppingCart itemShoppingCart : listOrderItemShoppingCart) {

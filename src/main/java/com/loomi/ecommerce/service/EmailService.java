@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
-
     @Autowired
-    private JavaMailSender emailSender;
+    final private JavaMailSender emailSender;
+
+    public EmailService(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
 
     public void sendEmail(String recipient, String subject, String message) {
         MimeMessage mailMessage = emailSender.createMimeMessage();

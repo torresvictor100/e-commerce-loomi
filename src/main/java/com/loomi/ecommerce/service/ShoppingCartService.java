@@ -17,15 +17,20 @@ import java.util.Optional;
 
 @Service
 public class ShoppingCartService {
-
     @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
-
+    final private ShoppingCartRepository shoppingCartRepository;
     @Autowired
-    private OrderItemShoppingCartService orderItemShoppingCartService;
-
+    final private OrderItemShoppingCartService orderItemShoppingCartService;
     @Autowired
-    private OrderService orderService;
+    final private OrderService orderService;
+
+    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository,
+                               OrderItemShoppingCartService orderItemShoppingCartService,
+                               OrderService orderService) {
+        this.shoppingCartRepository = shoppingCartRepository;
+        this.orderItemShoppingCartService = orderItemShoppingCartService;
+        this.orderService = orderService;
+    }
 
     public List<ShoppingCart> findAll() {
         return shoppingCartRepository.findAll();
@@ -57,13 +62,15 @@ public class ShoppingCartService {
 
     }
 
-    public Order convertShoppingCarInOrder(Long id) throws InsufficientStockException, ProductNotFoundException {
+    public Order convertShoppingCarInOrder(Long id)
+            throws InsufficientStockException, ProductNotFoundException {
         Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepository.findById(id);
         return convertShoppingCarInOrder(optionalShoppingCart.get());
     }
 
     private Order convertShoppingCarInOrder(ShoppingCart shoppingCart)
             throws InsufficientStockException, ProductNotFoundException {
+
         Order order = new Order();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -73,10 +80,12 @@ public class ShoppingCartService {
         order.setStatus(OrderStatus.RECEIVED);
         order.setTotalAmount(BigDecimal.ZERO);
         Order orderSave = orderService.save(order);
+
         List<OrderItem> listOrderItem = orderItemShoppingCartService
                 .ConvertOrderItemShoppingCarttoOrderItem(shoppingCart.getOrderItemsShoppingCart(), orderSave);
-        orderSave.setOrderItems(listOrderItem);
-        return orderService.update(orderSave);
 
+        orderSave.setOrderItems(listOrderItem);
+
+        return orderService.update(orderSave);
     }
 }
