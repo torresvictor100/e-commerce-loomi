@@ -9,6 +9,7 @@ import com.loomi.ecommerce.repository.OrderItemShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,12 +22,16 @@ public class OrderItemShoppingCartService {
     final private OrderItemService orderItemService;
     @Autowired
     final private ProductService productService;
+    @Autowired
+    final private OrderService orderService;
 
     public OrderItemShoppingCartService(OrderItemShoppingCartRepository orderItemShoppingCartRepository,
-                                        OrderItemService orderItemService, ProductService productService) {
+                                        OrderItemService orderItemService, ProductService productService,
+                                        OrderService orderService) {
         this.orderItemShoppingCartRepository = orderItemShoppingCartRepository;
         this.orderItemService = orderItemService;
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     public List<OrderItemShoppingCart> findAll() {
@@ -64,11 +69,16 @@ public class OrderItemShoppingCartService {
             throws InsufficientStockException, ProductNotFoundException {
         List<OrderItem> listOrderItems = new ArrayList<>();
 
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
         for (OrderItemShoppingCart itemShoppingCart : listOrderItemShoppingCart) {
             OrderItem orderItem = createOrderItem(order, itemShoppingCart);
-            productService.removeProductByQuantity(orderItem.getQuantity(),productService.findById(orderItem.getProductId()));
+            productService.removeProductByQuantity(orderItem.getQuantity(), productService.findById(orderItem.getProductId()));
             listOrderItems.add(orderItem);
+            totalAmount = totalAmount.add(itemShoppingCart.getSubtotal());
         }
+        order.setTotalAmount(totalAmount);
+        orderService.update(order);
         return listOrderItems;
     }
 

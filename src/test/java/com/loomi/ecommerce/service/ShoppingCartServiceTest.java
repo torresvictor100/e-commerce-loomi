@@ -123,8 +123,9 @@ class ShoppingCartServiceTest {
 
         Client client1 = clientService.findById(order2.getClientId());
 
-        assertEquals("test",client1.getFullName());
+        assertEquals("test", client1.getFullName());
 
+        assertEquals(BigDecimal.valueOf(50), order2.getTotalAmount());
 
     }
 
