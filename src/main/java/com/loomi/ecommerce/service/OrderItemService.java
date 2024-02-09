@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Service
 public class OrderItemService {
-
     @Autowired
     private final OrderItemRepository orderItemRepository;
 
@@ -18,25 +17,24 @@ public class OrderItemService {
         this.orderItemRepository = orderItemRepository;
     }
 
-    public List<OrderItem> findAll(){
+    public List<OrderItem> findAll() {
         return orderItemRepository.findAll();
     }
 
-    public OrderItem save(OrderItem orderItem){
+    public OrderItem save(OrderItem orderItem) {
         orderItem.setId(null);
         return orderItemRepository.save(orderItem);
     }
 
     public OrderItem findById(Long id) {
-        Optional<OrderItem> orderItem =  orderItemRepository.findById(id);
-        return orderItem.orElse(null);
-    }
+        Optional<OrderItem> orderItem = orderItemRepository.findById(id);
+        return orderItem.orElse(null);}
 
     public OrderItem update(OrderItem orderItem) {
         OrderItem orderItemFound = findById(orderItem.getId());
         if (orderItemFound != null) {
             return orderItemRepository.save(orderItemFound);
-        }else{
+        } else {
             return orderItem;
         }
     }

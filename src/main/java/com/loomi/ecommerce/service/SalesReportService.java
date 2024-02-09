@@ -12,7 +12,7 @@ import java.util.Optional;
 public class SalesReportService {
 
     @Autowired
-    private SalesReportRepository salesReportRepository;
+    final private SalesReportRepository salesReportRepository;
 
     public SalesReportService(SalesReportRepository salesReportRepository) {
         this.salesReportRepository = salesReportRepository;

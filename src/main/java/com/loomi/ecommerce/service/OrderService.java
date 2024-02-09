@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 public class OrderService {
-
     @Autowired
     private final OrderRepository orderRepository;
 
@@ -53,7 +52,6 @@ public class OrderService {
         orderRepository.delete(order);
 
     }
-
 
     public Order updateStatusOrdem(Order order) {
         Order orderFound = findById(order.getId());
