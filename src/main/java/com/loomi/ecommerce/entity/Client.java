@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +30,7 @@ public class Client {
     @SequenceGenerator(name = "client_sq", sequenceName = "client_sq", allocationSize = 1)
     private Long id;
 
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "user_id", nullable = false)
     private Long userId;
@@ -37,9 +42,16 @@ public class Client {
     @JsonIgnoreProperties({"client"})
     private User user;
 
+    @NotNull
     private String fullName;
+
+    @Pattern(regexp = "[0-9]+")
+    @Size(min = 10, max = 15)
     private String contact;
+
+    @NotBlank
     private String address;
+
     private boolean isActive;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -54,11 +66,9 @@ public class Client {
     @JsonIgnore
     private List<ShoppingCart> shoppingCart;
 
-    @Column(name = "creation_date", nullable = false)
+    @NotNull
     @CreationTimestamp
     private Timestamp creationDate;
-
-    @Column(name = "update_date")
     private Timestamp updateDate;
 
 }

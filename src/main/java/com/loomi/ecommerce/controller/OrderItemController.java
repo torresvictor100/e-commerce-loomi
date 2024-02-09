@@ -73,7 +73,7 @@ public class OrderItemController {
         }
     }
 
-    @Operation(summary = "Delete a OrderItem", tags = "O    rderItem")
+    @Operation(summary = "Delete a OrderItem", tags = "OrderItem")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "No Content")})
     @DeleteMapping(path = "/{order_item_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
