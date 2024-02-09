@@ -59,26 +59,30 @@ public class OrderItemShoppingCartService {
 
     }
 
-    public List<OrderItem> ConvertOrderItemShoppingCarttoOrderItem
+    public List<OrderItem> convertOrderItemShoppingCartToOrderItem
             (List<OrderItemShoppingCart> listOrderItemShoppingCart, Order order)
             throws InsufficientStockException, ProductNotFoundException {
         List<OrderItem> listOrderItems = new ArrayList<>();
 
         for (OrderItemShoppingCart itemShoppingCart : listOrderItemShoppingCart) {
-            OrderItem orderItem = new OrderItem();
-
-            orderItem.setId(null);
-            orderItem.setOrderId(order.getId());
-            orderItem.setOrder(order);
-            orderItem.setQuantity(itemShoppingCart.getQuantity());
-            orderItem.setUnitPrice(itemShoppingCart.getUnitPrice());
-            orderItem.setProductId(itemShoppingCart.getProductId());
-            orderItem.setProduct(itemShoppingCart.getProduct());
-
-            orderItemService.save(orderItem);
+            OrderItem orderItem = createOrderItem(order, itemShoppingCart);
             productService.removeProductByQuantity(orderItem.getQuantity(), orderItem.getProduct());
             listOrderItems.add(orderItem);
         }
         return listOrderItems;
+    }
+
+    private OrderItem createOrderItem(Order order, OrderItemShoppingCart itemShoppingCart) {
+        OrderItem orderItem = new OrderItem();
+
+        orderItem.setId(null);
+        orderItem.setOrderId(order.getId());
+        orderItem.setOrder(order);
+        orderItem.setQuantity(itemShoppingCart.getQuantity());
+        orderItem.setUnitPrice(itemShoppingCart.getUnitPrice());
+        orderItem.setProductId(itemShoppingCart.getProductId());
+        orderItem.setProduct(itemShoppingCart.getProduct());
+
+        return orderItemService.save(orderItem);
     }
 }

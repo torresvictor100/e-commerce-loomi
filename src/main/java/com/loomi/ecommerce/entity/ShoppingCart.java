@@ -3,6 +3,7 @@ package com.loomi.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class ShoppingCart {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "client_id", nullable = false)
+    @NotNull
     private Long clientId;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
