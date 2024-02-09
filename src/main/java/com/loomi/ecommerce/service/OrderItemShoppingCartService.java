@@ -66,7 +66,7 @@ public class OrderItemShoppingCartService {
 
         for (OrderItemShoppingCart itemShoppingCart : listOrderItemShoppingCart) {
             OrderItem orderItem = createOrderItem(order, itemShoppingCart);
-            productService.removeProductByQuantity(orderItem.getQuantity(), orderItem.getProduct());
+            productService.removeProductByQuantity(orderItem.getQuantity(),productService.findById(orderItem.getProductId()));
             listOrderItems.add(orderItem);
         }
         return listOrderItems;
