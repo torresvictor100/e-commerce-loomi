@@ -24,20 +24,20 @@ public class ClientController {
     @Operation(summary = "Find all Client", tags = "Client")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Client>> findAll(){
+    public ResponseEntity<List<Client>> findAll() {
         return ResponseEntity.ok(clientService.findAll());
     }
 
     @Operation(summary = "Find Client by full name", tags = "Client")
-    @GetMapping(path = "/fullname/{client_full_name}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/fullname/{client_full_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Client>> findByName(@PathVariable(name = "client_full_name") String fullName){
+    public ResponseEntity<List<Client>> findByName(@PathVariable(name = "client_full_name") String fullName) {
         return ResponseEntity.ok(clientService.findByFullName(fullName));
     }
 
     @Operation(summary = "Find Client by ID", tags = "Client")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/{client_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Client> findById(@PathVariable(name = "client_id") Long id) {
@@ -74,12 +74,12 @@ public class ClientController {
     }
 
     @Operation(summary = "Update a Client", tags = "Client")
-    @ApiResponses({ @ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     @PutMapping(path = "/{client_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Client> update(@PathVariable(name = "client_id") Long id,
-                                       @RequestBody Client client) {
+                                         @RequestBody Client client) {
         client.setId(id);
         try {
             client = clientService.update(client);
@@ -94,7 +94,7 @@ public class ClientController {
     }
 
     @Operation(summary = "Delete a Client", tags = "Client")
-    @ApiResponses({ @ApiResponse(responseCode = "204", description = "No Content") })
+    @ApiResponses({@ApiResponse(responseCode = "204", description = "No Content")})
     @DeleteMapping(path = "/{client_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteById(@PathVariable(name = "client_id") Long id) {

@@ -18,17 +18,17 @@ public class SalesReportService {
         this.salesReportRepository = salesReportRepository;
     }
 
-    public List<SalesReport> findAll(){
+    public List<SalesReport> findAll() {
         return salesReportRepository.findAll();
     }
 
-    public SalesReport save(SalesReport salesReport){
+    public SalesReport save(SalesReport salesReport) {
         salesReport.setId(null);
         return salesReportRepository.save(salesReport);
     }
 
     public SalesReport findById(Long id) {
-        Optional<SalesReport> optionalSalesReport=  salesReportRepository.findById(id);
+        Optional<SalesReport> optionalSalesReport = salesReportRepository.findById(id);
         return optionalSalesReport.orElse(null);
     }
 
@@ -36,7 +36,7 @@ public class SalesReportService {
         SalesReport salesReportFound = findById(salesReport.getId());
         if (salesReportFound != null) {
             return salesReportRepository.save(salesReport);
-        }else{
+        } else {
             return salesReport;
         }
     }

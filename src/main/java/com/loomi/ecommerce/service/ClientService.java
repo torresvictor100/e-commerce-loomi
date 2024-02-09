@@ -13,24 +13,24 @@ import java.util.Optional;
 public class ClientService {
 
     @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
-    public List<Client> findAll(){
+    public List<Client> findAll() {
         return clientRepository.findAll();
     }
 
-    public Client save(Client client){
+    public Client save(Client client) {
 
         client.setId(null);
         return clientRepository.save(client);
     }
 
     public Client findById(Long id) {
-        Optional<Client> optionalClient=  clientRepository.findById(id);
+        Optional<Client> optionalClient = clientRepository.findById(id);
         return optionalClient.orElse(null);
     }
 
@@ -40,15 +40,15 @@ public class ClientService {
     }
 
     public List<Order> findListOrderByCLientId(Long id) {
-        Optional<Client> optionalClient =  clientRepository.findById(id);
+        Optional<Client> optionalClient = clientRepository.findById(id);
         return optionalClient.get().getOrders();
     }
 
     public Client update(Client client) {
-        Client  userFound = findById(client.getId());
+        Client userFound = findById(client.getId());
         if (userFound != null) {
             return clientRepository.save(client);
-        }else{
+        } else {
             return client;
         }
     }
