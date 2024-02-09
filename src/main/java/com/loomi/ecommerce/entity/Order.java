@@ -3,6 +3,7 @@ package com.loomi.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class Order {
     @SequenceGenerator(name = "order_sq", sequenceName = "order_sq", allocationSize = 1)
     private Long id;
 
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "client_id", nullable = false)
     private Long clientId;
@@ -42,13 +45,13 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
 
     @CreationTimestamp
-    private Date orderDate;
-
+    private Timestamp orderDate;
     private BigDecimal totalAmount;
 
 }

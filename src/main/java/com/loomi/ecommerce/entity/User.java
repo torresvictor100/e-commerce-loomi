@@ -1,6 +1,8 @@
 package com.loomi.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,23 +26,25 @@ public class User {
     @SequenceGenerator(name = "users_sq", sequenceName = "users_sq", allocationSize = 1)
     private Long id;
 
-
+    @NotBlank
     @Column(nullable = false)
     private String name;
 
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "creation_date", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     @CreationTimestamp
     private Timestamp creationDate;
-
-    @Column(name = "update_date")
     private Timestamp updateDate;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserType type;

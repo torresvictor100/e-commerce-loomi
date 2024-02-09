@@ -71,21 +71,25 @@ public class ShoppingCartService {
     private Order convertShoppingCarInOrder(ShoppingCart shoppingCart)
             throws InsufficientStockException, ProductNotFoundException {
 
-        Order order = new Order();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Order order = createOrder(shoppingCart);
 
+        List<OrderItem> listOrderItem = orderItemShoppingCartService
+                .convertOrderItemShoppingCartToOrderItem(shoppingCart.getOrderItemsShoppingCart(), order);
+        order.setOrderItems(listOrderItem);
+
+        return orderService.update(order);
+    }
+
+    private Order createOrder(ShoppingCart shoppingCart) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Order order = new Order();
         order.setId(null);
         order.setClientId(shoppingCart.getClientId());
         order.setOrderDate(timestamp);
         order.setStatus(OrderStatus.RECEIVED);
         order.setTotalAmount(BigDecimal.ZERO);
-        Order orderSave = orderService.save(order);
-
-        List<OrderItem> listOrderItem = orderItemShoppingCartService
-                .ConvertOrderItemShoppingCarttoOrderItem(shoppingCart.getOrderItemsShoppingCart(), orderSave);
-
-        orderSave.setOrderItems(listOrderItem);
-
-        return orderService.update(orderSave);
+        return orderService.save(order);
     }
+
+
 }
