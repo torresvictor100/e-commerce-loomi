@@ -36,10 +36,15 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.GET, "/product").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET, "/orderitemshoppingcart").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/orderitemshoppingcart").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET, "/shoppingcart").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/shoppingcart").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, "/users").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/users/register").hasAnyRole("CUSTOMER")
+                        .anyRequest().hasRole("ADMIN")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

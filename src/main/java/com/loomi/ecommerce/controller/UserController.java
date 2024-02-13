@@ -1,11 +1,13 @@
 package com.loomi.ecommerce.controller;
 
+import com.loomi.ecommerce.entity.DTO.RegisterDTO;
 import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -87,5 +89,16 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable(name = "user_id") Long id) {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/register")
+    @Operation(summary = "register new user", tags = "User")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
+        if(this.userService.findByLogin(data.email()) != null) return ResponseEntity.badRequest().build();
+
+        User newUser = new User(data.name(), data.email(), data.password(), data.type());
+        this.userService.save(newUser);
+        return ResponseEntity.ok().build();
     }
 }
