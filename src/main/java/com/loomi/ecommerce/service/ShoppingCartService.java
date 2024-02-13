@@ -1,9 +1,6 @@
 package com.loomi.ecommerce.service;
 
-import com.loomi.ecommerce.entity.Order;
-import com.loomi.ecommerce.entity.OrderItem;
-import com.loomi.ecommerce.entity.OrderStatus;
-import com.loomi.ecommerce.entity.ShoppingCart;
+import com.loomi.ecommerce.entity.*;
 import com.loomi.ecommerce.exeception.InsufficientStockException;
 import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import com.loomi.ecommerce.repository.ShoppingCartRepository;
@@ -41,9 +38,34 @@ public class ShoppingCartService {
         return shoppingCartRepository.save(shoppingCart);
     }
 
+    public ShoppingCart save(ShoppingCart shoppingCart, User authenticatedUser) {
+        shoppingCart.setId(null);
+        if (authenticatedUser.isAdmin()){
+            return shoppingCartRepository.save(shoppingCart);
+        }else if(certificationUser(shoppingCart, authenticatedUser)){
+            return shoppingCartRepository.save(shoppingCart);
+        }
+        return null;
+    }
+
     public ShoppingCart findById(Long id) {
         Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepository.findById(id);
         return optionalShoppingCart.orElse(null);
+    }
+
+    public ShoppingCart findById(Long id, User authenticatedUser) {
+        Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepository.findById(id);
+        if(optionalShoppingCart.isPresent()){
+            return getShoppingCart(authenticatedUser, optionalShoppingCart);
+        }return null;
+    }
+
+    private ShoppingCart getShoppingCart(User authenticatedUser, Optional<ShoppingCart> optionalShoppingCart) {
+        if(authenticatedUser.isAdmin()){
+            return optionalShoppingCart.get();
+        }else if(certificationUser(optionalShoppingCart.get(), authenticatedUser)){
+            return optionalShoppingCart.get();
+        }return null;
     }
 
     public ShoppingCart update(ShoppingCart shoppingCart) {
@@ -90,5 +112,13 @@ public class ShoppingCartService {
         return orderService.save(order);
     }
 
+    private boolean certificationUser(ShoppingCart shoppingCart  , User authenticatedUser){
+        User userShoppingCart = shoppingCart.getClient().getUser();
+        if(userShoppingCart.getId() == authenticatedUser.getId()){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
 }

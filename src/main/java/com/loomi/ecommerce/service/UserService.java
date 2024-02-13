@@ -51,7 +51,6 @@ public class UserService {
     public User update(User user) {
         User userFound = findById(user.getId());
         if (userFound != null) {
-            user.setType(userFound.getType());
             return userRepository.save(user);
         } else {
             return user;

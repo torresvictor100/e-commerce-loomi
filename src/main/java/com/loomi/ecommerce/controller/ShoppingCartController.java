@@ -2,6 +2,7 @@ package com.loomi.ecommerce.controller;
 
 import com.loomi.ecommerce.entity.Order;
 import com.loomi.ecommerce.entity.ShoppingCart;
+import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,10 +36,12 @@ public class ShoppingCartController {
     @Operation(summary = "Find Shopping Cart by ID", tags = "ShoppingCart")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Not Found")})
-    @GetMapping(path = "/{shopping_cart_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/id/{shopping_cart_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ShoppingCart> findById(@PathVariable(name = "shopping_cart_id") Long id) {
-        ShoppingCart shoppingCart = shoppingCartService.findById(id);
+    public ResponseEntity<ShoppingCart> findById(@PathVariable(name = "shopping_cart_id") Long id,
+                                                 Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        ShoppingCart shoppingCart = shoppingCartService.findById(id,authenticatedUser);
         if (shoppingCart == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -48,22 +52,13 @@ public class ShoppingCartController {
     @Operation(summary = "Save a new Shopping Cart", tags = "ShoppingCart")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ShoppingCart> save(@RequestBody ShoppingCart shoppingCart) {
-        try {
-            shoppingCart = shoppingCartService.save(shoppingCart);
-            return new ResponseEntity<>(shoppingCart, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+    public ResponseEntity<ShoppingCart> save(@RequestBody ShoppingCart shoppingCart,
+                                             Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
 
-    @Operation(summary = "convert Shopping Car In Order", tags = "ShoppingCart")
-    @PostMapping(path = "/convert", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Order> convertShoppingCarInOrder(@RequestBody ShoppingCart shoppingCart) {
         try {
-            Order order = shoppingCartService.convertShoppingCarInOrder(shoppingCart.getId());
-            return new ResponseEntity<>(order, HttpStatus.CREATED);
+            shoppingCart = shoppingCartService.save(shoppingCart,authenticatedUser);
+            return new ResponseEntity<>(shoppingCart, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
