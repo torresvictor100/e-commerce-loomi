@@ -24,10 +24,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private UserService userService;
-    @Autowired
     private TokenService tokenService;
-
 
     @Operation(summary = "login Authentication", tags = "Authentication")
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,17 +37,4 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
-
-    @PostMapping("/register")
-    @Operation(summary = "register new user", tags = "Authentication")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.userService.findByLogin(data.email()) != null) return ResponseEntity.badRequest().build();
-
-        User newUser = new User(data.name(), data.email(), data.password(), data.type());
-        this.userService.save(newUser);
-        return ResponseEntity.ok().build();
-    }
-
-
 }
