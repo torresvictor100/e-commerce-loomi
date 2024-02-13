@@ -65,7 +65,7 @@ class UserServiceTest {
     void find() {
 
         User userToSave = new User();
-        userToSave.setId(1L);
+        userToSave.setId(100L);
         userToSave.setName("John Doe");
         userToSave.setEmail("john.doe@example.com");
         userToSave.setPassword("123");
@@ -82,7 +82,7 @@ class UserServiceTest {
     void findNoFind() {
 
         User userToSave = new User();
-        userToSave.setId(1L);
+        userToSave.setId(100L);
         userToSave.setName("John Doe");
         userToSave.setEmail("john.doe@example.com");
         userToSave.setPassword("123");
