@@ -96,5 +96,13 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean isAdmin() {
+        if (type == UserType.ADMIN) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
