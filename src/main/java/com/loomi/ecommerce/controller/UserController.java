@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,10 +64,12 @@ public class UserController {
     @PutMapping(path = "/{user_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<User> update(@PathVariable(name = "user_id") Long id,
-                                       @RequestBody User user) {
+                                       @RequestBody User user,
+                                       Authentication authentication) {
         user.setId(id);
+        User authenticatedUser = (User) authentication.getPrincipal();
         try {
-            user = userService.update(user);
+            user = userService.update(user, authenticatedUser);
             if (user == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {

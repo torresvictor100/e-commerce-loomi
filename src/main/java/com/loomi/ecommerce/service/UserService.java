@@ -1,9 +1,11 @@
 package com.loomi.ecommerce.service;
 
 import com.loomi.ecommerce.entity.User;
+import com.loomi.ecommerce.entity.UserType;
 import com.loomi.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class UserService {
         user.setId(null);
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(encryptedPassword);
+        user.setType(UserType.CUSTOMER);
         return userRepository.save(user);
     }
 
@@ -48,10 +51,21 @@ public class UserService {
     public User update(User user) {
         User userFound = findById(user.getId());
         if (userFound != null) {
+            user.setType(userFound.getType());
             return userRepository.save(user);
         } else {
             return user;
         }
+    }
+
+    public User update(User user, User authenticatedUser) {
+        User userFound = findById(user.getId());
+        if (authenticatedUser.isAdmin()) {
+            updateAdmin(user);
+        }else if (authenticatedUser.getId().equals(user.getId())){
+            updateSimpleUser(user);
+        }
+        return user;
     }
 
     public void deleteById(Long id) {
@@ -64,4 +78,25 @@ public class UserService {
     public UserDetails findByLogin(String email) {
         return userRepository.findByEmail(email);
     }
+
+    private User updateSimpleUser(User user) {
+        User userFound = findById(user.getId());
+        if (userFound != null) {
+            userFound.setName(user.getName());
+            userFound.setPassword(user.getPassword());
+            return userRepository.save(user);
+        } else {
+            return user;
+        }
+    }
+
+    private User updateAdmin(User user) {
+        User userFound = findById(user.getId());
+        if (userFound != null) {
+            return userRepository.save(user);
+        } else {
+            return user;
+        }
+    }
+
 }
