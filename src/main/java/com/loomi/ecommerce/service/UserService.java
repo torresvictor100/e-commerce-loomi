@@ -4,6 +4,8 @@ import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public class UserService {
 
     public User save(User user) {
         user.setId(null);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         return userRepository.save(user);
     }
 
@@ -55,5 +59,9 @@ public class UserService {
         user.setId(id);
         userRepository.delete(user);
 
+    }
+
+    public UserDetails findByLogin(String email) {
+        return userRepository.findByEmail(email);
     }
 }
