@@ -1,8 +1,6 @@
 package com.loomi.ecommerce.service;
 
-import com.loomi.ecommerce.entity.Order;
-import com.loomi.ecommerce.entity.OrderItem;
-import com.loomi.ecommerce.entity.OrderItemShoppingCart;
+import com.loomi.ecommerce.entity.*;
 import com.loomi.ecommerce.exeception.InsufficientStockException;
 import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import com.loomi.ecommerce.repository.OrderItemShoppingCartRepository;
@@ -25,6 +23,7 @@ public class OrderItemShoppingCartService {
     @Autowired
     final private OrderService orderService;
 
+
     public OrderItemShoppingCartService(OrderItemShoppingCartRepository orderItemShoppingCartRepository,
                                         OrderItemService orderItemService, ProductService productService,
                                         OrderService orderService) {
@@ -32,20 +31,49 @@ public class OrderItemShoppingCartService {
         this.orderItemService = orderItemService;
         this.productService = productService;
         this.orderService = orderService;
+
     }
 
     public List<OrderItemShoppingCart> findAll() {
         return orderItemShoppingCartRepository.findAll();
     }
 
+
+
     public OrderItemShoppingCart save(OrderItemShoppingCart orderItemShoppingCart) {
         orderItemShoppingCart.setId(null);
         return orderItemShoppingCartRepository.save(orderItemShoppingCart);
     }
 
+    public OrderItemShoppingCart save(OrderItemShoppingCart orderItemShoppingCart, User authenticatedUser) {
+        orderItemShoppingCart.setId(null);
+        if(authenticatedUser.isAdmin()){
+            return orderItemShoppingCartRepository.save(orderItemShoppingCart);
+        }else if(certificationUser(orderItemShoppingCart,authenticatedUser)){
+            return orderItemShoppingCartRepository.save(orderItemShoppingCart);
+        }
+        return null;
+    }
+
+
     public OrderItemShoppingCart findById(Long id) {
         Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart = orderItemShoppingCartRepository.findById(id);
         return optionalOrderItemShoppingCart.orElse(null);
+    }
+
+    public OrderItemShoppingCart findById(Long id, User authenticatedUser) {
+        Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart = orderItemShoppingCartRepository.findById(id);
+        if(optionalOrderItemShoppingCart.isPresent()){
+            return getOrderItemShoppingCart(authenticatedUser, optionalOrderItemShoppingCart);
+        }return null;
+    }
+
+    private OrderItemShoppingCart getOrderItemShoppingCart(User authenticatedUser, Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart) {
+        if(authenticatedUser.isAdmin()){
+            return optionalOrderItemShoppingCart.get();
+        }else if(certificationUser(optionalOrderItemShoppingCart.get(), authenticatedUser)){
+            return optionalOrderItemShoppingCart.get();
+        }return null;
     }
 
     public OrderItemShoppingCart update(OrderItemShoppingCart orderItemShoppingCart) {
@@ -95,4 +123,15 @@ public class OrderItemShoppingCartService {
 
         return orderItemService.save(orderItem);
     }
+
+    private boolean certificationUser(OrderItemShoppingCart orderItemShoppingCart , User authenticatedUser){
+        ShoppingCart shoppingCart = orderItemShoppingCart.getShoppingCart();
+        User userShoppingCart = shoppingCart.getClient().getUser();
+        if(userShoppingCart.getId() == authenticatedUser.getId()){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }
