@@ -5,6 +5,7 @@ import com.loomi.ecommerce.exeception.InsufficientStockException;
 import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import com.loomi.ecommerce.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/payment")
+@SecurityRequirement(name = "Bearer Authentication")
 public class PaymentController {
 
     @Autowired
