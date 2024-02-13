@@ -42,6 +42,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "register new user", tags = "Authentication")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         if(this.userService.findByLogin(data.email()) != null) return ResponseEntity.badRequest().build();
 
