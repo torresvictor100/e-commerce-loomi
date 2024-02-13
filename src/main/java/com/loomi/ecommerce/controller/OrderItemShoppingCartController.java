@@ -1,6 +1,7 @@
 package com.loomi.ecommerce.controller;
 
 import com.loomi.ecommerce.entity.OrderItemShoppingCart;
+import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.service.OrderItemShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,8 +36,10 @@ public class OrderItemShoppingCartController {
             @ApiResponse(responseCode = "404", description = "Not Found")})
     @GetMapping(path = "/{order_item_shopping_cart_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<OrderItemShoppingCart> findById(@PathVariable(name = "order_item_shopping_cart_id") Long id) {
-        OrderItemShoppingCart orderItemShoppingCart = orderItemShoppingCartService.findById(id);
+    public ResponseEntity<OrderItemShoppingCart> findById(@PathVariable(name = "order_item_shopping_cart_id") Long id,
+                                                          Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
+        OrderItemShoppingCart orderItemShoppingCart = orderItemShoppingCartService.findById(id,authenticatedUser);
         if (orderItemShoppingCart == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -46,9 +50,11 @@ public class OrderItemShoppingCartController {
     @Operation(summary = "Save a new Order Item Shopping Cart", tags = "OrderItemShoppingCart")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<OrderItemShoppingCart> save(@RequestBody OrderItemShoppingCart orderItemShoppingCart) {
+    public ResponseEntity<OrderItemShoppingCart> save(@RequestBody OrderItemShoppingCart orderItemShoppingCart,
+                                                      Authentication authentication) {
+        User authenticatedUser = (User) authentication.getPrincipal();
         try {
-            orderItemShoppingCart = orderItemShoppingCartService.save(orderItemShoppingCart);
+            orderItemShoppingCart = orderItemShoppingCartService.save(orderItemShoppingCart, authenticatedUser);
             return new ResponseEntity<>(orderItemShoppingCart, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
