@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -27,13 +26,21 @@ public class PasswordResetToken {
     private Long userId;
     @NotNull
     @CreationTimestamp
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateValidation;
+    private Timestamp dateCreated;
+    private Timestamp dateValidation;
+
+    private boolean isActivated;
 
     public PasswordResetToken(Long userId) {
         this.userId = userId;
         this.token = generateRandomToken();
-        this.dateValidation = this.dateCreated.plusHours(24);
+        this.dateCreated = new Timestamp(System.currentTimeMillis());
+        this.isActivated = true;
+    }
+
+    public void setValidationDate(int hours) {
+        long millisecondsToAdd = hours * 60 * 60 * 1000;
+        this.dateValidation = new Timestamp(this.dateCreated.getTime() + millisecondsToAdd);
     }
 
     private String generateRandomToken() {
