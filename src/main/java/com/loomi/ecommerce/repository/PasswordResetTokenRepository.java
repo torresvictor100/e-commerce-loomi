@@ -1,6 +1,6 @@
 package com.loomi.ecommerce.repository;
 
-import com.loomi.ecommerce.entity.DAO.PasswordResetToken;
+import com.loomi.ecommerce.entity.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

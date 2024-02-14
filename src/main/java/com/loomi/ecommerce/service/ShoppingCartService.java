@@ -22,6 +22,7 @@ public class ShoppingCartService {
     final private OrderService orderService;
     @Autowired
     private ClientService clientService;
+
     public ShoppingCartService(ShoppingCartRepository shoppingCartRepository,
                                OrderItemShoppingCartService orderItemShoppingCartService,
                                OrderService orderService) {
@@ -41,9 +42,9 @@ public class ShoppingCartService {
 
     public ShoppingCart save(ShoppingCart shoppingCart, User authenticatedUser) {
         shoppingCart.setId(null);
-        if (authenticatedUser.isAdmin()){
+        if (authenticatedUser.isAdmin()) {
             return shoppingCartRepository.save(shoppingCart);
-        }else if(certificationUser(shoppingCart, authenticatedUser)){
+        } else if (certificationUser(shoppingCart, authenticatedUser)) {
             return shoppingCartRepository.save(shoppingCart);
         }
         return null;
@@ -56,17 +57,19 @@ public class ShoppingCartService {
 
     public ShoppingCart findById(Long id, User authenticatedUser) {
         Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepository.findById(id);
-        if(optionalShoppingCart.isPresent()){
+        if (optionalShoppingCart.isPresent()) {
             return getShoppingCart(authenticatedUser, optionalShoppingCart);
-        }return null;
+        }
+        return null;
     }
 
     private ShoppingCart getShoppingCart(User authenticatedUser, Optional<ShoppingCart> optionalShoppingCart) {
-        if(authenticatedUser.isAdmin()){
+        if (authenticatedUser.isAdmin()) {
             return optionalShoppingCart.get();
-        }else if(certificationUser(optionalShoppingCart.get(), authenticatedUser)){
+        } else if (certificationUser(optionalShoppingCart.get(), authenticatedUser)) {
             return optionalShoppingCart.get();
-        }return null;
+        }
+        return null;
     }
 
     public ShoppingCart update(ShoppingCart shoppingCart) {
@@ -113,13 +116,12 @@ public class ShoppingCartService {
         return orderService.save(order);
     }
 
-    private boolean certificationUser(ShoppingCart shoppingCart  , User authenticatedUser){
+    private boolean certificationUser(ShoppingCart shoppingCart, User authenticatedUser) {
         User userShoppingCart = clientService.findById(shoppingCart.getClientId()).getUser();
-        if(userShoppingCart.getId() == authenticatedUser.getId()){
+        if (userShoppingCart.getId() == authenticatedUser.getId()) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
-
 }

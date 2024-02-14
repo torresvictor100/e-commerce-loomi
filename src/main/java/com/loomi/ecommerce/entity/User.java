@@ -59,14 +59,14 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private Client client;
 
-    public User(String name,String email){
+    public User(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.type == UserType.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
+        if (this.type == UserType.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
                 new SimpleGrantedAuthority("ROLE_PAYMENT"),
                 new SimpleGrantedAuthority("ROLE_CUSTOMER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));

@@ -28,7 +28,8 @@ public class OrderItemService {
 
     public OrderItem findById(Long id) {
         Optional<OrderItem> orderItem = orderItemRepository.findById(id);
-        return orderItem.orElse(null);}
+        return orderItem.orElse(null);
+    }
 
     public OrderItem update(OrderItem orderItem) {
         OrderItem orderItemFound = findById(orderItem.getId());
