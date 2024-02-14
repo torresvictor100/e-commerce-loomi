@@ -42,7 +42,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/orderitemshoppingcart").hasAnyRole("CUSTOMER")
                         .requestMatchers(HttpMethod.GET, "/shoppingcart/id/**").hasAnyRole("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/shoppingcart").hasAnyRole("CUSTOMER")
-                        .requestMatchers(HttpMethod.PUT, "/users").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, "/users/id/**").hasAnyRole("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/users/register").hasAnyRole("CUSTOMER")
                         .anyRequest().hasRole("ADMIN")
                 )

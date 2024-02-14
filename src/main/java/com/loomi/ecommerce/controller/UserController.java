@@ -63,7 +63,7 @@ public class UserController {
     @Operation(summary = "Update a User", tags = "User")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Not Found")})
-    @PutMapping(path = "/{user_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/id/{user_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<User> update(@PathVariable(name = "user_id") Long id,
                                        @RequestBody User user,
@@ -97,7 +97,7 @@ public class UserController {
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         if(this.userService.findByLogin(data.email()) != null) return ResponseEntity.badRequest().build();
 
-        User newUser = new User(data.name(), data.email(), data.password(), data.type());
+        User newUser = new User(data.name(), data.email(), data.password());
         this.userService.save(newUser);
         return ResponseEntity.ok().build();
     }
