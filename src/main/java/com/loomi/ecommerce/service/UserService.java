@@ -19,6 +19,9 @@ public class UserService {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -28,6 +31,14 @@ public class UserService {
     }
 
     public User save(User user) {
+        user.setId(null);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        user.setType(UserType.CUSTOMER);
+        return userRepository.save(user);
+    }
+
+    public User saveSendEmail(User user) {
         user.setId(null);
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(encryptedPassword);
