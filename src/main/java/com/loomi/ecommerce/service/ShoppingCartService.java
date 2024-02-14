@@ -20,7 +20,8 @@ public class ShoppingCartService {
     final private OrderItemShoppingCartService orderItemShoppingCartService;
     @Autowired
     final private OrderService orderService;
-
+    @Autowired
+    private ClientService clientService;
     public ShoppingCartService(ShoppingCartRepository shoppingCartRepository,
                                OrderItemShoppingCartService orderItemShoppingCartService,
                                OrderService orderService) {
@@ -113,7 +114,7 @@ public class ShoppingCartService {
     }
 
     private boolean certificationUser(ShoppingCart shoppingCart  , User authenticatedUser){
-        User userShoppingCart = shoppingCart.getClient().getUser();
+        User userShoppingCart = clientService.findById(shoppingCart.getClientId()).getUser();
         if(userShoppingCart.getId() == authenticatedUser.getId()){
             return true;
         }else {

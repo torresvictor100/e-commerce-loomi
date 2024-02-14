@@ -83,7 +83,7 @@ public class UserService {
         if (userFound != null) {
             userFound.setName(user.getName());
             userFound.setPassword(user.getPassword());
-            return userRepository.save(user);
+            return save(user);
         } else {
             return user;
         }
@@ -92,7 +92,7 @@ public class UserService {
     private User updateAdmin(User user) {
         User userFound = findById(user.getId());
         if (userFound != null) {
-            return userRepository.save(user);
+            return save(user);
         } else {
             return user;
         }
