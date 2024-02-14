@@ -94,8 +94,8 @@ public class UserController {
     @PostMapping("/register")
     @Operation(summary = "register new user", tags = "User")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.userService.findByLogin(data.email()) != null) return ResponseEntity.badRequest().build();
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
+        if (this.userService.findByLogin(data.email()) != null) return ResponseEntity.badRequest().build();
 
         User newUser = new User(data.name(), data.email());
         this.userService.saveSendEmail(newUser);

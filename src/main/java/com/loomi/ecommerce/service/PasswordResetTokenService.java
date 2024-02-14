@@ -1,6 +1,6 @@
 package com.loomi.ecommerce.service;
 
-import com.loomi.ecommerce.entity.DAO.PasswordResetToken;
+import com.loomi.ecommerce.entity.PasswordResetToken;
 import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.repository.PasswordResetTokenRepository;
 import com.loomi.ecommerce.repository.UserRepository;
@@ -22,6 +22,7 @@ public class PasswordResetTokenService {
         passwordResetToken.setId(null);
         return passwordResetTokenRepository.save(passwordResetToken);
     }
+
     public PasswordResetToken findByToken(String token) {
         Optional<PasswordResetToken> optionalToken =
                 passwordResetTokenRepository.findByToken(token);
@@ -49,31 +50,34 @@ public class PasswordResetTokenService {
 
     }
 
-    public void disableToken(PasswordResetToken passwordResetToken){
+    public void disableToken(PasswordResetToken passwordResetToken) {
         passwordResetToken.setActivated(false);
         passwordResetTokenRepository.save(passwordResetToken);
     }
 
     public User setPasswordForToken(String newPassword, String token) {
-        Optional<PasswordResetToken> optionalToken =
-                passwordResetTokenRepository.findByToken(token);
-        Optional<User> user = userRepository.findById(optionalToken.get().getUserId());
-        if(optionalToken.isPresent()){
-            if(LocalDateTime.now().isBefore(optionalToken.get().getDateValidation().toLocalDateTime())){
-                if(user.get() != null){
-                    String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
-                    user.get().setPassword(encryptedPassword);
-                    userRepository.save(user.get());
-                    disableToken(optionalToken.get());
-                }else {
-                    return  null;
-                }
-            }else {
-                return null;
+        Optional<PasswordResetToken> optionalToken = passwordResetTokenRepository.findByToken(token);
+        if (optionalToken.isPresent() && isValidToken(optionalToken)) {
+            Optional<User> user = userRepository.findById(optionalToken.get().getUserId());
+            if (user.isPresent()) {
+                setPasswordAndDisableToken(newPassword, user.get(), optionalToken.get());
+                return user.get();
             }
         }
-        return user.orElse(null);
+        return null;
     }
 
+    private boolean isValidToken(Optional<PasswordResetToken> optionalToken) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tokenExpiration = optionalToken.get().getDateValidation().toLocalDateTime();
+        return now.isBefore(tokenExpiration);
+    }
 
+    private void setPasswordAndDisableToken(String newPassword, User user, PasswordResetToken token) {
+        String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
+        user.setPassword(encryptedPassword);
+        user.isEnabled();
+        userRepository.save(user);
+        disableToken(token);
+    }
 }
