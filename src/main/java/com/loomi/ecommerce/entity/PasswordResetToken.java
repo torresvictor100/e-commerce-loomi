@@ -1,4 +1,4 @@
-package com.loomi.ecommerce.entity.DAO;
+package com.loomi.ecommerce.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.sql.Timestamp;
 import java.util.UUID;
 

@@ -3,7 +3,6 @@ package com.loomi.ecommerce.config;
 import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.entity.UserType;
 import com.loomi.ecommerce.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -42,7 +42,6 @@ public class OrderItemShoppingCartService {
     }
 
 
-
     public OrderItemShoppingCart save(OrderItemShoppingCart orderItemShoppingCart) {
         orderItemShoppingCart.setId(null);
         return orderItemShoppingCartRepository.save(orderItemShoppingCart);
@@ -50,14 +49,13 @@ public class OrderItemShoppingCartService {
 
     public OrderItemShoppingCart save(OrderItemShoppingCart orderItemShoppingCart, User authenticatedUser) {
         orderItemShoppingCart.setId(null);
-        if(authenticatedUser.isAdmin()){
+        if (authenticatedUser.isAdmin()) {
             return orderItemShoppingCartRepository.save(orderItemShoppingCart);
-        }else if(certificationUser(orderItemShoppingCart,authenticatedUser)){
+        } else if (certificationUser(orderItemShoppingCart, authenticatedUser)) {
             return orderItemShoppingCartRepository.save(orderItemShoppingCart);
         }
         return null;
     }
-
 
     public OrderItemShoppingCart findById(Long id) {
         Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart = orderItemShoppingCartRepository.findById(id);
@@ -66,17 +64,19 @@ public class OrderItemShoppingCartService {
 
     public OrderItemShoppingCart findById(Long id, User authenticatedUser) {
         Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart = orderItemShoppingCartRepository.findById(id);
-        if(optionalOrderItemShoppingCart.isPresent()){
+        if (optionalOrderItemShoppingCart.isPresent()) {
             return getOrderItemShoppingCart(authenticatedUser, optionalOrderItemShoppingCart);
-        }return null;
+        }
+        return null;
     }
 
     private OrderItemShoppingCart getOrderItemShoppingCart(User authenticatedUser, Optional<OrderItemShoppingCart> optionalOrderItemShoppingCart) {
-        if(authenticatedUser.isAdmin()){
+        if (authenticatedUser.isAdmin()) {
             return optionalOrderItemShoppingCart.get();
-        }else if(certificationUser(optionalOrderItemShoppingCart.get(), authenticatedUser)){
+        } else if (certificationUser(optionalOrderItemShoppingCart.get(), authenticatedUser)) {
             return optionalOrderItemShoppingCart.get();
-        }return null;
+        }
+        return null;
     }
 
     public OrderItemShoppingCart update(OrderItemShoppingCart orderItemShoppingCart) {
@@ -127,14 +127,13 @@ public class OrderItemShoppingCartService {
         return orderItemService.save(orderItem);
     }
 
-    private boolean certificationUser(OrderItemShoppingCart orderItemShoppingCart , User authenticatedUser){
+    private boolean certificationUser(OrderItemShoppingCart orderItemShoppingCart, User authenticatedUser) {
         ShoppingCart shoppingCart = shoppingCartRepository.findById(orderItemShoppingCart.getShoppingCartId()).get();
         User userShoppingCart = shoppingCart.getClient().getUser();
-        if(userShoppingCart.getId() == authenticatedUser.getId()){
+        if (userShoppingCart.getId() == authenticatedUser.getId()) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
-
 }

@@ -7,11 +7,11 @@ public enum UserType {
 
     private String type;
 
-    UserType(String type){
+    UserType(String type) {
         this.type = type;
     }
 
-    public String getType(){
+    public String getType() {
         return type;
     }
 }

@@ -92,5 +92,4 @@ public class ShoppingCartController {
         shoppingCartService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

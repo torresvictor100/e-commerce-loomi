@@ -1,13 +1,12 @@
 package com.loomi.ecommerce.service;
 
-import com.loomi.ecommerce.entity.DAO.PasswordResetToken;
+import com.loomi.ecommerce.entity.PasswordResetToken;
 import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.entity.UserType;
 import com.loomi.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,7 @@ public class UserService {
         passwordResetToken.setValidationDate(24);
         passwordResetToken = passwordResetTokenService.save(passwordResetToken);
 
-        if(passwordResetToken != null){
+        if (passwordResetToken != null) {
             String message = emailMessage.toString() + " " + urlDefault + "/passwordresettoken/reset"
                     + " token: " + passwordResetToken.getToken();
             emailService.sendEmail(user.getEmail(), emailSubject, message);
@@ -92,7 +91,7 @@ public class UserService {
     public User update(User user, User authenticatedUser) {
         if (authenticatedUser.isAdmin()) {
             updateAdmin(user);
-        }else if (authenticatedUser.getId().equals(user.getId())){
+        } else if (authenticatedUser.getId().equals(user.getId())) {
             updateSimpleUser(user);
         }
         return user;
@@ -131,5 +130,4 @@ public class UserService {
             return user;
         }
     }
-
 }
