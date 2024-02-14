@@ -2,6 +2,7 @@ package com.loomi.ecommerce.entity;
 
 public enum UserType {
     ADMIN("admin"),
+    PAYMENT("payment"),
     CUSTOMER("customer");
 
     private String type;
