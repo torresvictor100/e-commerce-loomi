@@ -1,10 +1,12 @@
 package com.loomi.ecommerce.service;
 
+import com.loomi.ecommerce.entity.DAO.PasswordResetToken;
 import com.loomi.ecommerce.entity.User;
 import com.loomi.ecommerce.entity.UserType;
 import com.loomi.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,15 +14,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
 public class UserService {
     @Autowired
     private final UserRepository userRepository;
-
+    @Autowired
+    private PasswordResetTokenService passwordResetTokenService;
     @Autowired
     private EmailService emailService;
+    @Value("${url.default}")
+    private String urlDefault;
+    @Value("${email.send.create.user.subject}")
+    private String emailSubject;
+    @Value("${email.send.create.user.message}")
+    private String emailMessage;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -40,10 +50,21 @@ public class UserService {
 
     public User saveSendEmail(User user) {
         user.setId(null);
-        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        String encryptedPassword = new BCryptPasswordEncoder().encode(UUID.randomUUID().toString());
         user.setPassword(encryptedPassword);
         user.setType(UserType.CUSTOMER);
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        PasswordResetToken passwordResetToken = new PasswordResetToken(user.getId());
+        passwordResetToken.setValidationDate(24);
+        passwordResetToken = passwordResetTokenService.save(passwordResetToken);
+
+        if(passwordResetToken != null){
+            String message = emailMessage.toString() + " " + urlDefault + "/passwordresettoken/reset"
+                    + " token: " + passwordResetToken.getToken();
+            emailService.sendEmail(user.getEmail(), emailSubject, message);
+        }
+        return user;
     }
 
     public User findById(Long id) {

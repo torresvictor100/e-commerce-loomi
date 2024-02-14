@@ -97,8 +97,8 @@ public class UserController {
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         if(this.userService.findByLogin(data.email()) != null) return ResponseEntity.badRequest().build();
 
-        User newUser = new User(data.name(), data.email(), data.password());
-        this.userService.save(newUser);
+        User newUser = new User(data.name(), data.email());
+        this.userService.saveSendEmail(newUser);
         return ResponseEntity.ok().build();
     }
 }

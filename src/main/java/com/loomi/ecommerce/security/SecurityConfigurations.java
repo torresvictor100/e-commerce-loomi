@@ -36,6 +36,7 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/passwordresettoken/reset").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.GET, "/product").hasAnyRole("CUSTOMER")
                         .requestMatchers(HttpMethod.GET, "/orderitemshoppingcart/id/**").hasAnyRole("CUSTOMER")
