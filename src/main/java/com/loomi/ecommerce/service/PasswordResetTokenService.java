@@ -68,9 +68,12 @@ public class PasswordResetTokenService {
     }
 
     private boolean isValidToken(Optional<PasswordResetToken> optionalToken) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime tokenExpiration = optionalToken.get().getDateValidation().toLocalDateTime();
-        return now.isBefore(tokenExpiration);
+        if(optionalToken.get().isActivated()){
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime tokenExpiration = optionalToken.get().getDateValidation().toLocalDateTime();
+            return now.isBefore(tokenExpiration);
+        }
+        return false;
     }
 
     private void setPasswordAndDisableToken(String newPassword, User user, PasswordResetToken token) {
