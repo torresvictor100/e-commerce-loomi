@@ -44,6 +44,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/shoppingcart").hasAnyRole("CUSTOMER")
                         .requestMatchers(HttpMethod.PUT, "/users/id/**").hasAnyRole("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/users/register").hasAnyRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/payment/**").hasAnyRole("PAYMENT")
                         .anyRequest().hasRole("ADMIN")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
