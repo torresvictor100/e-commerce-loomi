@@ -59,11 +59,10 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private Client client;
 
-    public User(String name,String email, String password, UserType type){
+    public User(String name,String email, String password){
         this.name = name;
         this.email = email;
         this.password = password;
-        this.type=type;
     }
 
     @Override

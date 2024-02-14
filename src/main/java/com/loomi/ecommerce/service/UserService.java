@@ -58,7 +58,6 @@ public class UserService {
     }
 
     public User update(User user, User authenticatedUser) {
-        User userFound = findById(user.getId());
         if (authenticatedUser.isAdmin()) {
             updateAdmin(user);
         }else if (authenticatedUser.getId().equals(user.getId())){
@@ -82,8 +81,9 @@ public class UserService {
         User userFound = findById(user.getId());
         if (userFound != null) {
             userFound.setName(user.getName());
-            userFound.setPassword(user.getPassword());
-            return save(user);
+            String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+            userFound.setPassword(encryptedPassword);
+            return userRepository.save(userFound);
         } else {
             return user;
         }
@@ -92,7 +92,9 @@ public class UserService {
     private User updateAdmin(User user) {
         User userFound = findById(user.getId());
         if (userFound != null) {
-            return save(user);
+            String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+            user.setPassword(encryptedPassword);
+            return userRepository.save(user);
         } else {
             return user;
         }
