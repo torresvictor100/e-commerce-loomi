@@ -36,7 +36,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("find yser by id false")
+    @DisplayName("find user by id false")
     void findUserByIdSucessoNoFound(){
 
         Optional<User> result = userRepository.findById(1L);
