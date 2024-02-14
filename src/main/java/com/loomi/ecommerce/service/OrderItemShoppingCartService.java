@@ -4,6 +4,7 @@ import com.loomi.ecommerce.entity.*;
 import com.loomi.ecommerce.exeception.InsufficientStockException;
 import com.loomi.ecommerce.exeception.ProductNotFoundException;
 import com.loomi.ecommerce.repository.OrderItemShoppingCartRepository;
+import com.loomi.ecommerce.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class OrderItemShoppingCartService {
     final private ProductService productService;
     @Autowired
     final private OrderService orderService;
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
 
 
     public OrderItemShoppingCartService(OrderItemShoppingCartRepository orderItemShoppingCartRepository,
@@ -125,7 +128,7 @@ public class OrderItemShoppingCartService {
     }
 
     private boolean certificationUser(OrderItemShoppingCart orderItemShoppingCart , User authenticatedUser){
-        ShoppingCart shoppingCart = orderItemShoppingCart.getShoppingCart();
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(orderItemShoppingCart.getShoppingCartId()).get();
         User userShoppingCart = shoppingCart.getClient().getUser();
         if(userShoppingCart.getId() == authenticatedUser.getId()){
             return true;

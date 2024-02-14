@@ -34,7 +34,7 @@ public class OrderItemShoppingCartController {
     @Operation(summary = "Find Order Item Shopping Cart by ID", tags = "OrderItemShoppingCart")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Not Found")})
-    @GetMapping(path = "/{order_item_shopping_cart_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/id/{order_item_shopping_cart_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderItemShoppingCart> findById(@PathVariable(name = "order_item_shopping_cart_id") Long id,
                                                           Authentication authentication) {
